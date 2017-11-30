@@ -128,6 +128,9 @@ def delete_thing(thing):
 
 
 def query_all_election(model):
+    return query_all_by_db(election_db, model)
+
+def query_all_by_db(db, model):
     thing = None
     try:
         thing = election_db.query(model).all()
@@ -135,6 +138,7 @@ def query_all_election(model):
         logger.info(e)
         election_db.rollback()
     return thing
+
 
 
 def add_or_update_election(thing):
