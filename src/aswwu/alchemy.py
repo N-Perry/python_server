@@ -141,7 +141,6 @@ def query_all_by_db(db, model):
     return thing
 
 
-
 def add_or_update_election(thing):
     try:
         election_db.add(thing)
