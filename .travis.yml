@@ -1,6 +1,6 @@
 env:
   global:
-    - CC_TEST_REPORTER_ID=9a092aa88feed0b0fb7f62c8b6bf4e218c4b055f92bc0bf59342d9a2a8c58a15
+#    - CC_TEST_REPORTER_ID=9a092aa88feed0b0fb7f62c8b6bf4e218c4b055f92bc0bf59342d9a2a8c58a15
 language: python
 python: "2.7"
 install:
