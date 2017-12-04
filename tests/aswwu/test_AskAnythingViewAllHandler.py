@@ -1,49 +1,6 @@
-import pytest
 import requests
 import json
-import sqlite3
-
-
-@pytest.fixture()
-def test_db():
-    data = [(1, "2016-01-01 10:20:05.123", "Something", True, True),
-            (2, "2016-01-01 10:20:05.124", "Something Else", True, True),
-            (3, "2016-01-01 10:20:05.125", "Something More", True, True)]
-
-    conn = sqlite3.connect('databases/people.db', check_same_thread=False)
-    with conn:
-        conn.executemany('INSERT INTO askanythings VALUES (?,?,?,?,?)', data)
-    yield
-    with conn:
-        conn.execute('DElETE FROM askanythings')
-    conn.close()
-
-
-@pytest.fixture()
-def test_db_with_votes():
-    data = [(1, "2016-01-01 10:20:05.123", "Something", True, True),
-            (2, "2016-01-01 10:20:05.124", "Something Else", True, True),
-            (3, "2016-01-01 10:20:05.125", "Something More", True, True)]
-
-    data2 = [(1, "2016-01-01 10:20:05.126", 1, "ryan.rabello"),
-             (2, "2016-01-01 10:20:05.127", 2, "ryan.rabello"),
-             (3, "2016-01-01 10:20:05.128", 3, "ryan.rabello")]
-
-    conn = sqlite3.connect('databases/people.db', check_same_thread=False)
-    with conn:
-        conn.executemany('INSERT INTO askanythings VALUES (?,?,?,?,?)', data)
-
-    with conn:
-        conn.executemany('INSERT INTO askanythingvotes VALUES (?,?,?,?)',
-                         data2)
-
-    yield
-    with conn:
-        conn.execute('DElETE FROM askanythings')
-
-    with conn:
-        conn.execute('DELETE FROM askanythingvotes')
-    conn.close()
+from tests.utils import askanything, askanthingvote, edit, gen_askanythingvotes, gen_askanythings
 
 
 def test_No_Data(testing_server):
@@ -56,61 +13,79 @@ def test_No_Data(testing_server):
     assert (json.loads(resp.text) == expected_data)
 
 
-def test_Data(testing_server, test_db):
+def test_data(testing_server, peopledb_conn):
     expected_data = [{
-        u"votes": 0,
-        u"reviewed": True,
-        u"question": u"Something",
-        u"authorized": True,
-        u"has_voted": False,
-        u"question_id": u"1",
+        "votes": 0,
+        "reviewed": True,
+        "question": "Something_0",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "0",
     }, {
-        u"votes": 0,
-        u"reviewed": True,
-        u"question": u"Something Else",
-        u"authorized": True,
-        u"has_voted": False,
-        u"question_id": u"2",
+        "votes": 0,
+        "reviewed": True,
+        "question": "Something_1",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "1",
     }, {
-        u"votes": 0,
-        u"reviewed": True,
-        u"question": u"Something More",
-        u"authorized": True,
-        u"has_voted": False,
-        u"question_id": u"3",
+        "votes": 0,
+        "reviewed": True,
+        "question": "Something_2",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "2",
     }]
 
-    url = "http://127.0.0.1:8888/askanything/view"
-    resp = requests.get(url)
-    assert (resp.status_code == 200)
-    assert (json.loads(resp.text) == expected_data)
+    with askanything(peopledb_conn, list(gen_askanythings(number=3))):
+        url = "http://127.0.0.1:8888/askanything/view"
+        resp = requests.get(url)
+        assert (resp.status_code == 200)
+        assert (json.loads(resp.text) == expected_data)
 
 
-def test_Data_with_votes(testing_server, test_db_with_votes):
+def test_data_with_votes(testing_server, peopledb_conn):
     expected_data = [{
-        u"votes": 1,
-        u"reviewed": True,
-        u"question": u"Something",
-        u"authorized": True,
-        u"has_voted": True,
-        u"question_id": u"1",
+        "votes": 1,
+        "reviewed": True,
+        "question": "Something_0",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "0",
     }, {
-        u"votes": 1,
-        u"reviewed": True,
-        u"question": u"Something Else",
-        u"authorized": True,
-        u"has_voted": True,
-        u"question_id": u"2",
+        "votes": 1,
+        "reviewed": True,
+        "question": "Something_1",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "1",
     }, {
-        u"votes": 1,
-        u"reviewed": True,
-        u"question": u"Something More",
-        u"authorized": True,
-        u"has_voted": True,
-        u"question_id": u"3",
+        "votes": 1,
+        "reviewed": True,
+        "question": "Something_2",
+        "authorized": True,
+        "has_voted": False,
+        "question_id": "2",
     }]
 
-    url = "http://127.0.0.1:8888/askanything/view"
-    resp = requests.get(url)
-    assert (resp.status_code == 200)
-    assert (json.loads(resp.text) == expected_data)
+    data = list(
+        edit(
+            gen_askanythingvotes(number=3), {
+                0: {
+                    'question_id': 0
+                },
+                1: {
+                    'question_id': 1
+                },
+                2: {
+                    'question_id': 2
+                }
+            }))
+
+    with askanything(
+            peopledb_conn, list(gen_askanythings(number=3))), askanthingvote(
+                peopledb_conn, data):
+        url = "http://127.0.0.1:8888/askanything/view"
+        resp = requests.get(url)
+        assert (resp.status_code == 200)
+        assert (json.loads(resp.text) == expected_data)

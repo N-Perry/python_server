@@ -11,3 +11,7 @@ python-coveralls
 requests
 SQLAlchemy
 tornado
+<<<<<<< HEAD
+=======
+names
+>>>>>>> 4513fc9b7094963f8cef2255238bc339c3c6d44f
