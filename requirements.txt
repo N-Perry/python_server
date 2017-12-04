@@ -1,7 +1,6 @@
 bandit
 bleach
 codacy-coverage
-codeclimate-test-reporter
 coverage
 coveralls
 names
