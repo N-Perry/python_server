@@ -15,3 +15,4 @@ script:
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 #random commit addition
+#add repo token as a Travis CI environment variable(?)
