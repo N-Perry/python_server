@@ -6,5 +6,12 @@ before_script:
   - coverage xml
 script:
   - pytest
+<<<<<<< HEAD
 after_script:
   - python-codacy-coverage -r coverage.xml
+=======
+  - pytest --cov=src tests/
+after_success:
+  - codeclimate-test-reporter
+  
+>>>>>>> upstream/develop

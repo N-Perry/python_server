@@ -18,6 +18,10 @@ installed and they can be installed with the following command.
 ```
 pip install -r requirements.txt
 ```
+Mac:
+```
+sudo -H pip install -r requirements.txt --ignore-installed six
+```
 You should be ready to run the server now.
 ```
 python server.py
