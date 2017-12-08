@@ -61,7 +61,8 @@ JobsBase.metadata.bind = election_engine
 jobs_dbs = sessionmaker(bind=jobs_engine)
 jobs_db = jobs_dbs()
 
-#generic for all query_all functions
+
+# generic for all query_all functions
 def query_all_by_db(db, model):
     thing = None
     try:
