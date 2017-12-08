@@ -61,6 +61,16 @@ JobsBase.metadata.bind = election_engine
 jobs_dbs = sessionmaker(bind=jobs_engine)
 jobs_db = jobs_dbs()
 
+#generic for all query_all functions
+def query_all_by_db(db, model):
+    thing = None
+    try:
+        thing = db.query(model).all()
+    except Exception as e:
+        logger.info(e)
+        db.rollback()
+    return thing
+
 
 # updates a model, or creates it if it doesn't exist
 def add_or_update(thing):
@@ -75,13 +85,7 @@ def add_or_update(thing):
 
 # finds all rows for a given model
 def query_all(model):
-    thing = None
-    try:
-        thing = people_db.query(model).all()
-    except Exception as e:
-        logger.info(e)
-        people_db.rollback()
-    return thing
+    return query_all_by_db(people_db, model)
 
 
 # finds all rows for a given model matching the given WWUID
@@ -137,16 +141,6 @@ def delete_thing(thing):
 
 def query_all_election(model):
     return query_all_by_db(election_db, model)
-
-
-def query_all_by_db(db, model):
-    thing = None
-    try:
-        thing = election_db.query(model).all()
-    except Exception as e:
-        logger.info(e)
-        election_db.rollback()
-    return thing
 
 
 def add_or_update_election(thing):
@@ -223,13 +217,7 @@ def query_by_job_name(model, name):
 
 
 def query_all_forms(model):
-    thing = None
-    try:
-        thing = jobs_db.query(model).all()
-    except Exception as e:
-        logger.info(e)
-        jobs_db.rollback()
-    return thing
+    return query_all_by_db(jobs_db, model)
 
 
 # permanently deletes a given model
