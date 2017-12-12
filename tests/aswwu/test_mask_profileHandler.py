@@ -34,7 +34,7 @@ def test_profile_handler_current_year(testing_server, peopledb_conn):
         "personality": "None",
         "pet_peeves": "None",
         "phone": "None",
-        "photo": "profiles/1617/00958-2019687.jpg",
+        "photo": "profiles/1617/00000-9000001.jpg",
         "preprofessional": "None",
         "privacy": "None",
         "quote": "None",
@@ -46,7 +46,7 @@ def test_profile_handler_current_year(testing_server, peopledb_conn):
      }
 
     with profile(peopledb_conn, list(gen_profiles(number = 3))):
-        url = "http://127.0.0.1:8888/profile/1718/test.profile1"
+        url = "http://127.0.0.1:8888/profile/1617/test.profile1"
         resp = requests.get(url)
     assert (resp.status_code == 200)
     assert (json.loads(resp.text) == expected_data)
@@ -80,7 +80,7 @@ def test_profile_handler_archive(testing_server, archivesdb_conn):
         "personality": "None",
         "pet_peeves": "None",
         "phone": "None",
-        "photo": "profiles/1617/00958-2019687.jpg",
+        "photo": "profiles/1617/00000-9000001.jpg",
         "preprofessional": "None",
         "privacy": "None",
         "quote": "None",

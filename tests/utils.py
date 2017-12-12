@@ -160,11 +160,11 @@ def gen_profiles(number=5):
 
     """
     for i in xrange(number):
-
+        wwuid = 9000000 + i
         yield {
             "id" : 100 + i,
-            "wwuid": 9000000 + i,
-            "photo": "profiles/1617/00958-2019687.jpg",
+            "wwuid": wwuid,
+            "photo": "profiles/1617/00000-" + `wwuid` + ".jpg",
             "majors": "Computer Science",
             "username" : "test.profile" + `i`,
             "gender": "female"
