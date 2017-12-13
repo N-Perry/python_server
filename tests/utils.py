@@ -148,8 +148,30 @@ def edit(generator, changes):
         yield record
 
 
-# Generator to create archived user profiles
+# Generator to create user profiles
 def gen_profiles(number=5):
+    """Generate Mask profilesaskanythings
+
+    Keyword Arguments:
+    number(int) -- The upper limit of generated records (default 5)
+
+    Yields:
+    dict        -- Record information
+
+    """
+    for i in xrange(number):
+        wwuid = 9000000 + i
+        yield {
+            "id" : 100 + i,
+            "wwuid": wwuid,
+            "photo": "profiles/1718/00000-" + `wwuid` + ".jpg",
+            "majors": "Computer Science",
+            "username" : "test.profile" + `i`,
+            "gender": "female"
+    }
+
+# Generator to create archived user profiles
+def gen_archived_profiles(number=5):
     """Generate Mask profilesaskanythings
 
     Keyword Arguments:
@@ -292,7 +314,7 @@ def archived_profile(conn, profiles=None):
 
     """
     if profiles is None:
-        profiles = list(gen_profiles())
+        profiles = list(gen_archived_profiles())
 
     conn.execute(PROFILES1617_TABLE.insert(), profiles)
     yield profiles

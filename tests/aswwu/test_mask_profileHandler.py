@@ -1,6 +1,6 @@
 import requests
 import json
-from tests.utils import profile, archived_profile, gen_profiles
+from tests.utils import profile, archived_profile, gen_profiles, gen_archived_profiles
 
 def test_profile_handler_No_Data(testing_server):
 
@@ -34,19 +34,19 @@ def test_profile_handler_current_year(testing_server, peopledb_conn):
         "personality": "None",
         "pet_peeves": "None",
         "phone": "None",
-        "photo": "profiles/1617/00000-9000001.jpg",
+        "photo": "profiles/1718/00000-9000001.jpg",
         "preprofessional": "None",
         "privacy": "None",
         "quote": "None",
         "quote_author": "None",
         "relationship_status": "None",
         "username" : "test.profile1",
-        "views" : "1",
+        "views" : "3",
         "website": "None",
      }
 
     with profile(peopledb_conn, list(gen_profiles(number = 3))):
-        url = "http://127.0.0.1:8888/profile/1617/test.profile1"
+        url = "http://127.0.0.1:8888/profile/1718/test.profile1"
         resp = requests.get(url)
     assert (resp.status_code == 200)
     assert (json.loads(resp.text) == expected_data)
@@ -91,7 +91,7 @@ def test_profile_handler_archive(testing_server, archivesdb_conn):
         "website": "None",
     }
 
-    with archived_profile(archivesdb_conn, list(gen_profiles(number = 3))):
+    with archived_profile(archivesdb_conn, list(gen_archived_profiles(number = 3))):
         url = "http://127.0.0.1:8888/profile/1617/test.profile1"
         resp = requests.get(url)
 
