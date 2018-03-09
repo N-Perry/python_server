@@ -150,7 +150,7 @@ def edit(generator, changes):
 
 # Generator to create user profiles
 def gen_profiles(number=5):
-    """Generate Mask profilesaskanythings
+    """Generate Mask profiles
 
     Keyword Arguments:
     number(int) -- The upper limit of generated records (default 5)
@@ -159,20 +159,26 @@ def gen_profiles(number=5):
     dict        -- Record information
 
     """
+    gender = ["male", "female"]
+    majors = ["Computer Science", "Software Engineering", ""]
+    pet_peeves = ["Being tinkered with", ""]
     for i in xrange(number):
         wwuid = 9000000 + i
         yield {
             "id" : 100 + i,
             "wwuid": wwuid,
             "photo": "profiles/1718/00000-" + `wwuid` + ".jpg",
-            "majors": "Computer Science",
+            "majors": majors[i%3],
+            "username" : username, 
+            "gender": gender[i%2],
+            "pet_peeves": pet_peeves[i%2]
             "username" : "test.profile" + `i`,
             "gender": "female"
     }
 
 # Generator to create archived user profiles
 def gen_archived_profiles(number=5):
-    """Generate Mask profilesaskanythings
+    """Generate Mask profiles archived
 
     Keyword Arguments:
     number(int) -- The upper limit of generated records (default 5)
@@ -181,16 +187,23 @@ def gen_archived_profiles(number=5):
     dict        -- Record information
 
     """
+    gender = ["male", "female"]
+    majors = ["Computer Science", "Software Engineering", ""]
+    pet_peeves = ["Being tinkered with", ""]
     for i in xrange(number):
         wwuid = 9000000 + i
         yield {
             "id" : 100 + i,
             "wwuid": wwuid,
             "photo": "profiles/1617/00000-" + `wwuid` + ".jpg",
-            "majors": "Computer Science",
+            "majors": majors[i%3],
+            "username" : username, 
+            "gender": gender[i%2],
+            "pet_peeves": pet_peeves[i%2]
             "username" : "test.profile" + `i`,
             "gender": "female"
     }
+
 
 
 def gen_job_answer(number_answers_per_app=5, num_apps=5):
