@@ -169,7 +169,6 @@ def gen_profiles(number=5):
             "wwuid": wwuid,
             "photo": "profiles/1718/00000-" + `wwuid` + ".jpg",
             "majors": majors[i%3],
-            "username" : username, 
             "gender": gender[i%2],
             "pet_peeves": pet_peeves[i%2]
             "username" : "test.profile" + `i`,
